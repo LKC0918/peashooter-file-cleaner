@@ -1,8 +1,16 @@
 # Peashooter File Cleaner · 豌豆射手文件清理器
 
-原生 macOS 桌面动画工具的源码原型，使用 **Swift、AppKit、SpriteKit 和 Finder Sync Extension**。在 Finder 或桌面上右键一个普通文件，选择「召唤豌豆射手」，通过两次独立确认后，以动画形式将文件移入系统废纸篓。
+原生 macOS 桌面动画工具，使用 **Swift、AppKit、SpriteKit 和 Finder Sync Extension**。在 Finder 或桌面上右键一个普通文件，选择「召唤豌豆射手」，通过两次独立确认后，以动画形式将文件移入系统废纸篓。
 
-**本仓库是源码分享版，不包含第三方游戏图片、应用图标、音效、原始素材包或编译好的应用。** 完整构建前需要自行准备有权使用的资源，见 [素材准备说明](Resources/ASSET_SOURCES.md)。
+## 普通用户：下载安装
+
+到 **[Releases 下载 Mac 安装包](https://github.com/LKC0918/peashooter-file-cleaner/releases)**，下载文件名以 `universal.dmg` 结尾的安装盘，不要选择 GitHub 自动生成的 `Source code` 源码包。支持 macOS 13+，包含 Apple Silicon 和 Intel 架构，不需要 Xcode、终端或开发者账户。
+
+打开 DMG → 把应用拖到 Applications → 从“应用程序”启动 → 先播放安全演示 → 点击“设置 Finder 右键菜单…”按说明启用扩展和权限。详细图文排版的[安装与使用说明](Resources/UserGuide.html)也在安装盘和应用内提供，可离线阅读。
+
+**当前发布的是未经 Apple 公证的匿名本地签名测试版。** 首次打开可能需要系统设置“隐私与安全性”中的“仍要打开”；若系统报告恶意、损坏或没有允许入口，停止操作，不要关闭 Gatekeeper、SIP 或绕过隔离保护。不能承诺在所有 Mac 上无提示打开。正式的默认安全设置下分发需要 Developer ID 签名与 Apple 公证；签名开发者名称通常是公开信息。参见 [Apple 的公证说明](https://developer.apple.com/documentation/security/notarizing-macos-software-before-distribution)和[安全打开应用说明](https://support.apple.com/102445)。
+
+发布者已确认本版本运行素材的再分发授权；仓库仅包含经过元数据清理的必要运行资源，不含原始 Scratch 归档。相关素材不因公开下载而转授进一步使用权，见 [第三方说明](THIRD_PARTY_NOTICES.md)。
 
 ## 功能设计
 
@@ -24,18 +32,18 @@ xcode-select -p
 xcodebuild -version
 ```
 
-无需下载第三方 Swift 包。未准备素材时，可先检查公开目录和 Xcode 工程结构：
+无需下载第三方 Swift 包。可先检查公开目录和 Xcode 工程结构：
 
 ```bash
 ruby Scripts/check_public_snapshot.rb
 ./Scripts/verify_project.sh --source-only
 ```
 
-`--source-only` 检查源码、脚本、plist 和工程结构，不表示应用已经具备完整的美术、音频或运行体验。
+`--source-only` 只检查源码、脚本、plist 和工程结构；完整资源检查请直接运行 `./Scripts/verify_project.sh`。
 
 ## 准备资源、构建与安装
 
-1. 按 [资源规范](Resources/ASSET_SOURCES.md) 准备自己有权使用的 PNG、WAV 和 `AppIcon.icns`，放入说明中的本地位置。
+1. 本版本已提供经清理的运行资源；如替换美术，请按 [资源规范](Resources/ASSET_SOURCES.md) 准备自己有权使用的 PNG、WAV 和 `AppIcon.icns`。
 2. 执行完整检查和构建：
 
    ```bash
@@ -103,4 +111,6 @@ THIRD_PARTY_NOTICES.md        第三方资源说明
 
 源码公开目录通过明确的文件类型白名单整理，不包含私人文件、截图、账户凭据、机器日志、助手配置、Xcode 个人设置、原工作目录的 Git 历史或历史备份包。测试路径仅为合成示例。提交应使用 GitHub 隐藏邮箱，避免把个人邮箱写入公开元数据。
 
-未选择额外的源码开源许可证，也未提供第三方素材的公开授权。面向普通用户发布应用前，还需要解决美术和音频许可、签名与公证以及目标 macOS 系统实测问题。
+未选择额外的源码开源许可证。第三方素材的再使用需另行取得权利，不应从仓库可见性推断。测试版打包使用 `./Scripts/package_release.sh --unsigned-beta --authorized-assets`；输出只包含经过白名单审核的应用、离线说明和第三方说明，不包含构建日志、调试符号、私人路径或签名证书。发布流程与限制见 [发布说明](docs/RELEASE_NOTES.md)。
+
+GitHub Actions 在 `Distribution/version.txt` 更新或手动触发后执行隐私检查、XCTest、通用构建和安装盘检查，再使用仅限当前仓库的临时令牌发布预发布版本。它不需要个人 Apple ID、证书私钥或长期 GitHub 令牌；不会上传原始构建日志、测试结果包或本机文件。该流程通过不等于所有 macOS 硬件上的 Finder 和 Gatekeeper 实测通过。

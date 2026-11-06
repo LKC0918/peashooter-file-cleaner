@@ -49,7 +49,5 @@
 /tmp/
 /test-results/
 
-# Public source edition: keep local artwork and audio out of commits
-/Resources/AppIcon.icns
-/Resources/assets/*
-!/Resources/assets/README.md
+# Only metadata-sanitized runtime artwork approved for distribution is tracked.
+# Original Scratch archives and all unrelated binary files stay excluded above.

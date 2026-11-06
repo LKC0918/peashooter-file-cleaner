@@ -5,6 +5,33 @@ import XCTest
 
 @MainActor
 final class ExperienceStateMachineTests: XCTestCase {
+    func testDistributionBundleHasGuideAndPortableFinderWorkflow() throws {
+        let bundle = Bundle(for: AppDelegate.self)
+        XCTAssertNotNil(bundle.url(forResource: "UserGuide", withExtension: "html"))
+        let workflow = try XCTUnwrap(bundle.url(forResource: "召唤豌豆射手", withExtension: "workflow"))
+        let data = try Data(contentsOf: workflow.appendingPathComponent("Contents/Resources/document.wflow"))
+        let text = try XCTUnwrap(String(data: data, encoding: .utf8))
+        XCTAssertTrue(text.contains("/usr/bin/open -b com.peashooter.file-cleaner"))
+        XCTAssertFalse(text.contains("$HOME/Applications"))
+    }
+
+    func testFinderWorkflowInstallerDoesNotOverwriteExistingFiles() throws {
+        let root = FileManager.default.temporaryDirectory.appendingPathComponent("PeashooterSetupTests-\(UUID().uuidString)")
+        let source = root.appendingPathComponent("Source.workflow")
+        let sourceResources = source.appendingPathComponent("Contents/Resources")
+        try FileManager.default.createDirectory(at: sourceResources, withIntermediateDirectories: true)
+        let original = Data("app-created workflow".utf8)
+        try original.write(to: sourceResources.appendingPathComponent("document.wflow"))
+        let services = root.appendingPathComponent("Services")
+        XCTAssertEqual(try FinderIntegrationInstaller.install(from: source, into: services), .installed)
+        let installed = services.appendingPathComponent("召唤豌豆射手.workflow/Contents/Resources/document.wflow")
+        XCTAssertEqual(try Data(contentsOf: installed), original)
+        try Data("new source".utf8).write(to: sourceResources.appendingPathComponent("document.wflow"))
+        XCTAssertEqual(try FinderIntegrationInstaller.install(from: source, into: services), .alreadyInstalled)
+        XCTAssertEqual(try Data(contentsOf: installed), original)
+        XCTAssertThrowsError(try FinderIntegrationInstaller.install(from: nil, into: services))
+    }
+
     func testHappyPathMatchesSafetyFlow() throws {
         let machine = ExperienceStateMachine()
         let path: [ExperienceState] = [

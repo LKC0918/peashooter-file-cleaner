@@ -52,6 +52,7 @@ xmllint --noout "$PROJECT_DIR/PeashooterFileCleaner.xcodeproj/xcshareddata/xcsch
 bash -n "$PROJECT_DIR/Scripts/build_local.sh"
 bash -n "$PROJECT_DIR/Scripts/install_local.sh"
 bash -n "$PROJECT_DIR/Scripts/verify_project.sh"
+bash -n "$PROJECT_DIR/Scripts/package_release.sh"
 
 expected_idle=12
 expected_shoot=11

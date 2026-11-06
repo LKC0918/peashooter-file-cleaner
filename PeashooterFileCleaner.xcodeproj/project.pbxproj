@@ -35,6 +35,9 @@
 		B40000000000000000000005 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E10000000000000000000004 /* XCTest.framework */; };
 		B50000000000000000000001 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000001 /* assets */; };
 		B50000000000000000000002 /* AppIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = C40000000000000000000004 /* AppIcon.icns */; };
+		B50000000000000000000003 /* Finder Quick Action in Resources */ = {isa = PBXBuildFile; fileRef = C40000000000000000000005 /* Finder Quick Action */; };
+		B50000000000000000000004 /* UserGuide.html in Resources */ = {isa = PBXBuildFile; fileRef = C40000000000000000000006 /* UserGuide.html */; };
+		B50000000000000000000005 /* THIRD_PARTY_NOTICES.md in Resources */ = {isa = PBXBuildFile; fileRef = C40000000000000000000007 /* THIRD_PARTY_NOTICES.md */; };
 		B60000000000000000000001 /* PeashooterFinderExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = D10000000000000000000002 /* PeashooterFinderExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
@@ -94,6 +97,9 @@
 		C40000000000000000000002 /* PeashooterFileCleaner.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PeashooterFileCleaner.entitlements; sourceTree = "<group>"; };
 		C40000000000000000000003 /* ASSET_SOURCES.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = ASSET_SOURCES.md; sourceTree = "<group>"; };
 		C40000000000000000000004 /* AppIcon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = AppIcon.icns; sourceTree = "<group>"; };
+		C40000000000000000000005 /* Finder Quick Action */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "../QuickAction/召唤豌豆射手.workflow"; sourceTree = "<group>"; };
+		C40000000000000000000006 /* UserGuide.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = UserGuide.html; sourceTree = "<group>"; };
+		C40000000000000000000007 /* THIRD_PARTY_NOTICES.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = "../THIRD_PARTY_NOTICES.md"; sourceTree = "<group>"; };
 		D10000000000000000000001 /* Peashooter File Cleaner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Peashooter File Cleaner.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D10000000000000000000002 /* PeashooterFinderExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = PeashooterFinderExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		D10000000000000000000003 /* PeashooterFileCleanerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PeashooterFileCleanerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -129,7 +135,7 @@
 		A20000000000000000000003 /* Animation */ = {isa = PBXGroup; children = (C10000000000000000000004 /* AssetLoader.swift */, C10000000000000000000005 /* AnimationOverlayPanel.swift */, C10000000000000000000006 /* PeashooterScene.swift */, C10000000000000000000007 /* ConfirmationPanelController.swift */, C10000000000000000000008 /* AnimationWindowController.swift */, ); path = Animation; sourceTree = "<group>"; };
 		A20000000000000000000004 /* Core */ = {isa = PBXGroup; children = (C10000000000000000000009 /* ExperienceState.swift */, C1000000000000000000000A /* SummonRequest.swift */, C1000000000000000000000B /* FileSafetyPolicy.swift */, C1000000000000000000000C /* TrashService.swift */, C1000000000000000000000D /* AppLogger.swift */, ); path = Core; sourceTree = "<group>"; };
 		A20000000000000000000005 /* FinderExtension */ = {isa = PBXGroup; children = (C20000000000000000000001 /* FinderSync.swift */, C20000000000000000000002 /* Info.plist */, C20000000000000000000003 /* PeashooterFinderExtension.entitlements */, ); path = FinderExtension; sourceTree = "<group>"; };
-		A20000000000000000000006 /* Resources */ = {isa = PBXGroup; children = (C40000000000000000000001 /* AppInfo.plist */, C40000000000000000000002 /* PeashooterFileCleaner.entitlements */, C40000000000000000000003 /* ASSET_SOURCES.md */, C40000000000000000000004 /* AppIcon.icns */, F10000000000000000000001 /* assets */, ); path = Resources; sourceTree = "<group>"; };
+		A20000000000000000000006 /* Resources */ = {isa = PBXGroup; children = (C40000000000000000000001 /* AppInfo.plist */, C40000000000000000000002 /* PeashooterFileCleaner.entitlements */, C40000000000000000000003 /* ASSET_SOURCES.md */, C40000000000000000000004 /* AppIcon.icns */, C40000000000000000000005 /* Finder Quick Action */, C40000000000000000000006 /* UserGuide.html */, C40000000000000000000007 /* THIRD_PARTY_NOTICES.md */, F10000000000000000000001 /* assets */, ); path = Resources; sourceTree = "<group>"; };
 		A20000000000000000000007 /* Tests */ = {isa = PBXGroup; children = (C30000000000000000000001 /* ExperienceStateMachineTests.swift */, C30000000000000000000002 /* FileSafetyPolicyTests.swift */, C30000000000000000000003 /* SummonURLCodecTests.swift */, C30000000000000000000004 /* TrashServiceIntegrationTests.swift */, ); path = Tests; sourceTree = "<group>"; };
 		A20000000000000000000008 /* Frameworks */ = {isa = PBXGroup; children = (E10000000000000000000001 /* AppKit.framework */, E10000000000000000000002 /* SpriteKit.framework */, E10000000000000000000003 /* FinderSync.framework */, E10000000000000000000004 /* XCTest.framework */, ); name = Frameworks; sourceTree = "<group>"; };
 		A20000000000000000000009 /* Products */ = {isa = PBXGroup; children = (D10000000000000000000001 /* Peashooter File Cleaner.app */, D10000000000000000000002 /* PeashooterFinderExtension.appex */, D10000000000000000000003 /* PeashooterFileCleanerTests.xctest */, ); name = Products; sourceTree = "<group>"; };
@@ -198,7 +204,7 @@
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		A60000000000000000000003 /* Resources */ = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (B50000000000000000000001 /* assets in Resources */, B50000000000000000000002 /* AppIcon.icns in Resources */, ); runOnlyForDeploymentPostprocessing = 0; };
+		A60000000000000000000003 /* Resources */ = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (B50000000000000000000001 /* assets in Resources */, B50000000000000000000002 /* AppIcon.icns in Resources */, B50000000000000000000003 /* Finder Quick Action in Resources */, B50000000000000000000004 /* UserGuide.html in Resources */, B50000000000000000000005 /* THIRD_PARTY_NOTICES.md in Resources */, ); runOnlyForDeploymentPostprocessing = 0; };
 		A60000000000000000000007 /* Resources */ = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
 		A6000000000000000000000A /* Resources */ = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
 /* End PBXResourcesBuildPhase section */

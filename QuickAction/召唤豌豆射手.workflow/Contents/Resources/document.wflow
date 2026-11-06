@@ -19,7 +19,7 @@
                     <string>if [ "$#" -ne 1 ]; then
     exit 64
 fi
-/usr/bin/open -a "$HOME/Applications/Peashooter File Cleaner.app" "$1"</string>
+/usr/bin/open -b com.peashooter.file-cleaner "$1"</string>
                     <key>inputMethod</key>
                     <integer>1</integer>
                     <key>shell</key>

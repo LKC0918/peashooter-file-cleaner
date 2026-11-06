@@ -1,8 +1,9 @@
 # Architecture
 
-This is the public source edition. Runtime artwork, audio and app icons are
-not included. Supply original or licensed local assets according to
-`Resources/ASSET_SOURCES.md` before a full build or visual verification.
+This public edition includes a metadata-sanitized runtime asset allowlist,
+supplied by the publisher who confirmed redistribution rights. The original
+archives and private authorization records are not distributed. See
+`Resources/ASSET_SOURCES.md` and `THIRD_PARTY_NOTICES.md` for scope.
 
 ## Targets
 
@@ -30,11 +31,11 @@ Opening the URL starts the host app when necessary. The host parses and validate
 
 ### Finder Quick Action compatibility entry
 
-On macOS versions where Finder starts a Finder Sync extension but does not call `menu(for:)`, the installed Finder-scoped Quick Action contributes the same top-level **召唤豌豆射手** command. It accepts exactly one Finder file and asks Launch Services to open that file with the installed `~/Applications/Peashooter File Cleaner.app`. Using the installed path prevents Xcode debug copies with the same bundle identifier from receiving the request. While the host is waiting in the background, it records the most recent global right-click point so the Quick Action does not mistake the later menu-item click for the Finder icon. Launch Services starts the app when needed; `AppDelegate` recognizes the incoming `file://` URL and passes it to the same `AppCoordinator` validation path. The Quick Action never moves, deletes or reads the file itself.
+On macOS versions where Finder starts a Finder Sync extension but does not call `menu(for:)`, the Finder-scoped Quick Action contributes **召唤豌豆射手**, possibly under Quick Actions or Services. It accepts exactly one file and calls Launch Services with the application's bundle identifier, so installation under either Applications directory works without a publisher-specific path. Keep only one installed copy to avoid routing to a debug build. The app's setup command installs the embedded workflow only with explicit approval, never overwrites an existing same-named entry, and does not change permission settings. While the host waits in the background, it records the most recent Finder right-click point rather than the later menu click. Launch Services starts the app when needed; `AppDelegate` passes the request to the same validation path. The Quick Action never moves, deletes or reads the file itself.
 
 Finder Sync remains the primary implementation on systems where its menu callback is available. Both entries converge before file validation and the two confirmation steps. A global right-click is retained only when Finder was the frontmost application; unrelated clicks in other apps are ignored.
 
-This local prototype keeps the host app unsandboxed so it can move the confirmed user file to Trash after receiving the selected path. The extension remains sandboxed. A distributable/App Store build should replace the path handoff with an App Group plus a security-scoped bookmark and enable the host app sandbox.
+The direct-distribution beta keeps the host unsandboxed so it can move the confirmed user file to Trash after receiving the selected path. The Finder extension remains sandboxed. This is not an App Store build; App Store distribution would require a separate sandbox and security-scoped access design. This beta uses anonymous ad-hoc signing, not Developer ID or notarization, and requires user-managed Gatekeeper and Finder permissions.
 
 ## State machine
 

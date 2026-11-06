@@ -1,0 +1,64 @@
+name: Build and publish macOS beta
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: [Distribution/version.txt]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: macos-beta-release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    if: github.repository == 'LKC0918/peashooter-file-cleaner'
+    runs-on: macos-15
+    timeout-minutes: 30
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: Check public source and runtime assets
+        run: |
+          ruby Scripts/check_public_snapshot.rb
+          ruby Scripts/test_release_tools.rb
+          ./Scripts/verify_project.sh
+      - name: Run XCTest without publishing machine logs
+        shell: bash
+        run: |
+          set -euo pipefail
+          if ! xcodebuild test -project PeashooterFileCleaner.xcodeproj \
+            -scheme 'Peashooter File Cleaner' -destination 'platform=macOS' \
+            -derivedDataPath "$RUNNER_TEMP/Peashooter-tests" \
+            CODE_SIGN_IDENTITY=- CODE_SIGNING_ALLOWED=YES \
+            > "$RUNNER_TEMP/Peashooter-tests.log" 2>&1; then
+            echo 'XCTest failed; no installation package will be published.'
+            exit 1
+          fi
+      - name: Package anonymous, unnotarized universal beta
+        run: ./Scripts/package_release.sh --unsigned-beta --authorized-assets
+      - name: Publish only DMG and checksum
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          version="$(tr -d '\r\n' < Distribution/version.txt)"
+          tag="v$version"
+          if gh release view "$tag" >/dev/null 2>&1; then
+            echo 'Release already exists; refusing to overwrite published files.'
+            exit 1
+          fi
+          gh release create "$tag" \
+            "dist/$version/Peashooter-File-Cleaner-$version-universal.dmg" \
+            "dist/$version/SHA256SUMS.txt" \
+            --target "$GITHUB_SHA" --prerelease \
+            --title "Peashooter File Cleaner $version (macOS beta)" \
+            --notes-file docs/RELEASE_NOTES.md

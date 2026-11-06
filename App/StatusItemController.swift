@@ -35,6 +35,13 @@ final class StatusItemController: NSObject {
         demoItem.target = self
         menu.addItem(demoItem)
 
+        let setupItem = NSMenuItem(title: "设置 Finder 右键菜单…", action: #selector(setUpFinder), keyEquivalent: "")
+        setupItem.target = self
+        menu.addItem(setupItem)
+        let guideItem = NSMenuItem(title: "安装与使用说明", action: #selector(openUserGuide), keyEquivalent: "?")
+        guideItem.target = self
+        menu.addItem(guideItem)
+
         let safetyItem = NSMenuItem(title: "安全说明", action: #selector(showSafety), keyEquivalent: "")
         safetyItem.target = self
         menu.addItem(safetyItem)
@@ -95,13 +102,55 @@ final class StatusItemController: NSObject {
         hideControlPanel()
     }
 
+    @objc private func openUserGuide() {
+        guard let guide = Bundle.main.url(forResource: "UserGuide", withExtension: "html") else { return }
+        NSWorkspace.shared.open(guide)
+    }
+
+    @objc private func setUpFinder() {
+        NSApp.activate(ignoringOtherApps: true)
+        let alert = NSAlert()
+        alert.messageText = "设置 Finder 右键菜单"
+        alert.informativeText = "请在系统设置的扩展管理中启用 Peashooter 的 Finder 扩展。不同 macOS 的位置可能是“通用 → 登录项与扩展 → Finder”，或“隐私与安全性 → 扩展”。\n\n也可安装兼容快捷操作，入口可能位于右键菜单的“快速操作”或“服务”中。只添加本应用的快捷操作，不会自动修改系统权限；已有同名操作不会被覆盖。"
+        alert.addButton(withTitle: "安装兼容入口")
+        alert.addButton(withTitle: "打开系统设置")
+        alert.addButton(withTitle: "取消")
+        switch alert.runModal() {
+        case .alertFirstButtonReturn:
+            do {
+                let services = FileManager.default.homeDirectoryForCurrentUser
+                    .appendingPathComponent("Library/Services", isDirectory: true)
+                let result = try FinderIntegrationInstaller.install(
+                    from: Bundle.main.url(forResource: "召唤豌豆射手", withExtension: "workflow"),
+                    into: services
+                )
+                NSUpdateDynamicServices()
+                let done = NSAlert()
+                done.messageText = result == .installed ? "兼容入口已安装" : "已有同名兼容入口，已保留原文件"
+                done.informativeText = "在 Finder 中右键一个普通文件，检查“召唤豌豆射手”、 “快速操作”或“服务”。若尚未出现，请在系统设置中启用对应快捷操作，或重新打开 Finder。辅助功能和控制 Finder 的权限仍需由你手动允许，详见使用说明。"
+                done.addButton(withTitle: "知道了")
+                done.runModal()
+            } catch {
+                let errorAlert = NSAlert()
+                errorAlert.messageText = "未能安装兼容入口"
+                errorAlert.informativeText = error.localizedDescription
+                errorAlert.addButton(withTitle: "知道了")
+                errorAlert.runModal()
+            }
+        case .alertSecondButtonReturn:
+            NSWorkspace.shared.open(URL(fileURLWithPath: "/System/Applications/System Settings.app"))
+        default:
+            break
+        }
+    }
+
     @objc private func quit() {
         NSApp.terminate(nil)
     }
 
     private func makeControlPanelController() -> NSWindowController {
         let panel = NSPanel(
-            contentRect: NSRect(x: 0, y: 0, width: 500, height: 330),
+            contentRect: NSRect(x: 0, y: 0, width: 500, height: 400),
             styleMask: [.titled, .closable, .miniaturizable],
             backing: .buffered,
             defer: false
@@ -156,6 +205,14 @@ final class StatusItemController: NSObject {
         closeButton.bezelStyle = .rounded
         closeButton.controlSize = .large
 
+        let setupButton = NSButton(title: "设置 Finder 右键菜单…", target: self, action: #selector(setUpFinder))
+        setupButton.bezelStyle = .rounded
+        let guideButton = NSButton(title: "安装与使用说明", target: self, action: #selector(openUserGuide))
+        guideButton.bezelStyle = .rounded
+        let setupStack = NSStackView(views: [setupButton, guideButton])
+        setupStack.orientation = .horizontal
+        setupStack.spacing = 12
+
         let buttonStack = NSStackView(views: [demoButton, safetyButton])
         buttonStack.orientation = .horizontal
         buttonStack.alignment = .centerY
@@ -167,6 +224,7 @@ final class StatusItemController: NSObject {
             statusLabel,
             instructionLabel,
             buttonStack,
+            setupStack,
             closeButton
         ])
         rootStack.orientation = .vertical
@@ -186,5 +244,25 @@ final class StatusItemController: NSObject {
         ])
 
         return NSWindowController(window: panel)
+    }
+}
+
+enum FinderIntegrationInstaller {
+    enum Result { case installed, alreadyInstalled }
+    enum InstallError: LocalizedError {
+        case missingResource
+        var errorDescription: String? { "安装包中没有找到完整的 Finder 快捷操作，请重新下载应用。" }
+    }
+
+    static func install(from source: URL?, into servicesDirectory: URL) throws -> Result {
+        let manager = FileManager.default
+        guard let source, source.pathExtension == "workflow",
+              manager.fileExists(atPath: source.appendingPathComponent("Contents/Resources/document.wflow").path)
+        else { throw InstallError.missingResource }
+        let destination = servicesDirectory.appendingPathComponent("召唤豌豆射手.workflow", isDirectory: true)
+        if manager.fileExists(atPath: destination.path) { return .alreadyInstalled }
+        try manager.createDirectory(at: servicesDirectory, withIntermediateDirectories: true)
+        try manager.copyItem(at: source, to: destination)
+        return .installed
     }
 }
