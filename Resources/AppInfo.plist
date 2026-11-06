@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>CFBundleDevelopmentRegion</key>
+    <string>$(DEVELOPMENT_LANGUAGE)</string>
+    <key>CFBundleDisplayName</key>
+    <string>Peashooter File Cleaner</string>
+    <key>CFBundleExecutable</key>
+    <string>$(EXECUTABLE_NAME)</string>
+    <key>CFBundleIdentifier</key>
+    <string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+    <key>CFBundleIconFile</key>
+    <string>AppIcon</string>
+    <key>CFBundleInfoDictionaryVersion</key>
+    <string>6.0</string>
+    <key>CFBundleName</key>
+    <string>$(PRODUCT_NAME)</string>
+    <key>CFBundlePackageType</key>
+    <string>APPL</string>
+    <key>CFBundleShortVersionString</key>
+    <string>1.0</string>
+    <key>CFBundleVersion</key>
+    <string>1</string>
+    <key>CFBundleURLTypes</key>
+    <array>
+        <dict>
+            <key>CFBundleTypeRole</key>
+            <string>Viewer</string>
+            <key>CFBundleURLName</key>
+            <string>com.peashooter.file-cleaner.summon</string>
+            <key>CFBundleURLSchemes</key>
+            <array>
+                <string>peashooter-cleaner</string>
+            </array>
+        </dict>
+    </array>
+    <key>LSMinimumSystemVersion</key>
+    <string>$(MACOSX_DEPLOYMENT_TARGET)</string>
+	<key>LSUIElement</key>
+	<true/>
+	<key>NSHighResolutionCapable</key>
+	<true/>
+	<key>NSDesktopFolderUsageDescription</key>
+	<string>用于在你完成两次确认后，将选中的桌面文件安全移入废纸篓。</string>
+	<key>NSDocumentsFolderUsageDescription</key>
+	<string>用于读取你在 Finder 中明确选择的文件信息，并在两次确认后安全移入废纸篓。</string>
+	<key>NSDownloadsFolderUsageDescription</key>
+	<string>用于读取你在 Finder 中明确选择的下载文件信息，并在两次确认后安全移入废纸篓。</string>
+	<key>NSAppleEventsUsageDescription</key>
+	<string>用于核对 Finder 当前唯一选中的文件，并读取其桌面图标位置以对齐动画。</string>
+	<key>NSServices</key>
+	<array>
+		<dict>
+			<key>NSMenuItem</key>
+			<dict>
+				<key>default</key>
+				<string>召唤豌豆射手</string>
+			</dict>
+			<key>NSMessage</key>
+			<string>summonPeashooter</string>
+			<key>NSPortName</key>
+			<string>Peashooter File Cleaner</string>
+			<key>NSRestricted</key>
+			<false/>
+			<key>NSServiceDescription</key>
+			<string>用豌豆射手动画将选中的普通文件安全移入废纸篓。</string>
+			<key>NSSendFileTypes</key>
+			<array>
+				<string>public.data</string>
+			</array>
+		</dict>
+	</array>
+    <key>NSHumanReadableCopyright</key>
+    <string>Private prototype. Replace third-party assets before distribution.</string>
+    <key>NSPrincipalClass</key>
+    <string>NSApplication</string>
+</dict>
+</plist>

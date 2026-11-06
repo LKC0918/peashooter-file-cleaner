@@ -1,0 +1,55 @@
+# macOS
+.DS_Store
+._*
+.Spotlight-V100/
+.Trashes/
+
+# Xcode and local build products
+/Build/
+/DerivedData/
+/build/
+**/xcuserdata/
+*.xcuserstate
+*.xccheckout
+*.xcscmblueprint
+*.xcresult/
+*.app/
+*.appex/
+*.dSYM/
+
+# Local assistant and editor settings
+.claude/
+.codex/
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Credentials and local overrides
+.env
+.env.*
+!.env.example
+*.p12
+*.p8
+*.pem
+*.key
+*.mobileprovision
+*.provisionprofile
+
+# Original archives and export packages (runtime assets remain tracked)
+*.sb3
+*.zip
+*.dmg
+*.pkg
+*.bundle
+*.log
+/dist/
+
+# Test and extraction scratch space
+/tmp/
+/test-results/
+
+# Public source edition: keep local artwork and audio out of commits
+/Resources/AppIcon.icns
+/Resources/assets/*
+!/Resources/assets/README.md
